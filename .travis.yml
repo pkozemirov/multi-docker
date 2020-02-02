@@ -1,0 +1,19 @@
+services:
+  - docker
+
+before_install:
+  - docker build -t kozemirov/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true kozemirov/react-test npm test
+
+after_success:
+  - docker build -t kozemirov/multi-client ./client
+  - docker build -t kozemirov/multi-nginx ./nginx
+  - docker build -t kozemirov/multi-server ./server
+  - docker build -t kozemirov/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push kozemirov/multi-client
+  - docker push kozemirov/multi-nginx
+  - docker push kozemirov/multi-server
+  - docker push kozemirov/multi-worker
