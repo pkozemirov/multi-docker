@@ -17,12 +17,14 @@
     {
       "name": "worker",
       "image": "kozemirov/multi-worker",
+      "hostname": "worker",
       "essential": false,
       "memory": 128
     },
     {
       "name": "nginx",
       "image": "kozemirov/multi-nginx",
+      "hostname": "nginx",
       "essential": true,
       "portMappings": [{
         "hostPort": 80,
